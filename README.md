@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lazar Couverture 27 — site
 
-## Getting Started
+Site de **Lazar Couverture 27**, couvreur zingueur aux Andelys (27700) et dans l'Eure.
+Next.js 16 (App Router, Turbopack), React 19, TypeScript strict, Tailwind CSS v4.
 
-First, run the development server:
+86 pages, toutes prerendues a la compilation. Aucune base de donnees, aucun CMS :
+le contenu vit dans `src/content/`, ce qui rend chaque modification revisable en diff.
+
+## Demarrer
 
 ```bash
+npm install
+cp .env.example .env.local   # puis renseigner les cles
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run build` compile la version de production, `npm start` la sert.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Ou se trouve quoi
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Chemin | Role |
+| --- | --- |
+| `src/lib/site.ts` | **Source unique du NAP** (nom, adresse, telephone, horaires, note). Ne jamais reecrire ces valeurs ailleurs. |
+| `src/content/services.ts` · `p1.ts` | Les prestations. `p1.ts` porte les six pages prioritaires, redigees au format capsule + detail + tableau. |
+| `src/content/villes.ts` · `interventions.ts` | Communes couvertes et pages service x ville. |
+| `src/content/guides.ts` | Guides de fond (prix au m2, aides, ardoise ou tuile...). |
+| `src/content/photos.ts` | **Genere** par `prepare-photos.py`. Seule source de photos du site. Ne pas editer a la main. |
+| `src/content/avis.ts` | Avis clients. Un avis n'est publie que si `verbatim: true`, c'est-a-dire si le texte exact a ete releve sur la fiche Google. |
+| `src/components/schema/` | Donnees structurees JSON-LD (RoofingContractor, Service, FAQPage, BreadcrumbList...). |
+| `src/app/actions/formulaire.ts` | Traitement des formulaires devis et contact. |
 
-## Learn More
+## Photos et logo
 
-To learn more about Next.js, take a look at the following resources:
+Les images du site sont **exclusivement** des photos de chantier fournies par
+l'entreprise. Aucune banque d'images. Le pipeline (`prepare-photos.py`, a la
+racine du projet parent) renomme en slug SEO, recadre, redimensionne, ecrit les
+metadonnees EXIF, puis regenere `src/content/photos.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`prepare-logo.py` part du logo fourni par l'entreprise et en tire `logo.png`,
+`logo.webp`, les icones et `og.jpg`. Le logo n'est jamais redessine.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Formulaires
 
-## Deploy on Vercel
+Deux formulaires, un seul chemin d'envoi (`envoyerFormulaire`) :
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Resend** si `RESEND_API_KEY` est defini — envoi depuis le domaine, meilleure
+  delivrabilite, mais exige un domaine verifie par DNS.
+- **Web3Forms** sinon. Son plan gratuit refuse les requetes serveur : l'action
+  valide et met en forme, puis le navigateur poste lui-meme. Le destinataire est
+  celui auquel la cle est rattachee — l'API n'a pas de parametre `to`. Pour
+  toucher plusieurs boites, declarer une cle par adresse, separees par une virgule.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Variables a saisir chez l'hebergeur : voir `.env.example`.
+
+## A completer par l'entreprise
+
+- Numero de TVA (ou mention de franchise) et assurance decennale, dans
+  `src/app/mentions-legales/page.tsx`.
+- Texte exact des avis Google, dans `src/content/avis.ts` (`verbatim: true`).
+- Champ `experience` de chaque prestation : le constat de terrain, en une phrase.
