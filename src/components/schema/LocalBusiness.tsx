@@ -8,6 +8,27 @@ function jsonLd(data: unknown) {
   return { __html: JSON.stringify(data) };
 }
 
+/**
+ * Une commune desservie.
+ *
+ * `postalCode` et `addressCountry` ne sont PAS des proprietes de `City` : le
+ * validateur schema.org les signale sur chaque commune. Le code postal se
+ * declare dans une `PostalAddress` imbriquee, et il compte ici — c'est lui qui
+ * leve l'ambiguite entre communes homonymes.
+ */
+function commune(nom: string, cp: string) {
+  return {
+    "@type": "City",
+    name: nom,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: nom,
+      postalCode: cp,
+      addressCountry: "FR",
+    },
+  };
+}
+
 /** RoofingContractor complet — à poser une seule fois, sur l'accueil. */
 export function LocalBusinessSchema() {
   const data = {
@@ -64,12 +85,7 @@ export function LocalBusinessSchema() {
       opens: h.opens,
       closes: h.closes,
     })),
-    areaServed: villes.map((v) => ({
-      "@type": "City",
-      name: v.nom,
-      postalCode: v.cp,
-      addressCountry: "FR",
-    })),
+    areaServed: villes.map((v) => commune(v.nom, v.cp)),
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: site.rating.value,
@@ -164,11 +180,7 @@ export function ServiceSchema({
     url,
     serviceType: name,
     provider: { "@id": `${site.url}/#business` },
-    areaServed: villes.map((v) => ({
-      "@type": "City",
-      name: v.nom,
-      postalCode: v.cp,
-    })),
+    areaServed: villes.map((v) => commune(v.nom, v.cp)),
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
 }
@@ -355,7 +367,7 @@ export function VilleSchema({
     serviceType: "Travaux de couverture et de zinguerie",
     url,
     provider: entreprise,
-    areaServed: { "@type": "City", name: ville, postalCode: cp, addressCountry: "FR" },
+    areaServed: commune(ville, cp),
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: `Prestations a ${ville}`,
