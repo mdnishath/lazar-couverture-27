@@ -69,6 +69,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Aller au contenu
         </a>
+        {/* Google lit le sitemap depuis robots.txt ; ce lien ne sert qu'aux
+            outils d'audit (SEOquake, Screaming Frog) qui cherchent la balise
+            dans le head. React 19 la remonte tout seul. */}
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
         <OrganizationSchema />
         <Header />
         <main id="contenu" className="pb-20 lg:pb-0">
