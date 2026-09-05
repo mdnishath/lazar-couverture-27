@@ -1,18 +1,22 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { photoHero } from "@/content/images";
+import { site } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
+
 import { combos } from "@/content/combos";
 import { servicesBySlug } from "@/content/services";
 import { villesBySlug } from "@/content/villes";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, SectionTitle, Eyebrow, Lead, Breadcrumb, CtaPair, ArrowIcon } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: { absolute: "Couvreur à Vernon, Gisors, Gaillon, Étrépagny, Louviers" },
-  description:
-    "Démoussage, nettoyage, fuite, rénovation, réparation et zinguerie à Vernon, Gisors, Gaillon, Étrépagny et Louviers. Le détail par commune.",
-  alternates: { canonical: "/interventions" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Couvreur à Vernon, Gisors, Gaillon, Étrépagny, Louviers",
+  description: "Démoussage, nettoyage, fuite, rénovation, réparation et zinguerie à Vernon, Gisors, Gaillon, Étrépagny et Louviers. Le détail par commune.",
+  path: "/interventions",
+  image: photoHero,
+});
 
 export default function InterventionsHub() {
   // On reconstruit la matrice depuis les combos : rien à maintenir ici.
@@ -27,6 +31,15 @@ export default function InterventionsHub() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="Interventions par commune"
+        description="Le detail de chaque prestation, commune par commune, dans l'Eure."
+        url={`${site.url}/interventions`}
+        elements={combos.map((c) => ({
+          name: c.h1,
+          href: `/interventions/${c.service}-${c.ville}`,
+        }))}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

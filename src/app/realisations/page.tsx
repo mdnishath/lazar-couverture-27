@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 
+import { site } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
+
 import { services } from "@/content/services";
-import { getPhotoSet, galerie } from "@/content/images";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { getPhotoSet, galerie, photoHero } from "@/content/images";
+import { BreadcrumbSchema, GalerieSchema } from "@/components/schema/LocalBusiness";
 import { Section, Eyebrow, Lead, Breadcrumb, CtaPair, PhotoBlock, PhotoGrid } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: { absolute: "Réalisations : chantiers de couverture dans l'Eure" },
-  description:
-    "Chantiers de couverture réalisés aux Andelys et dans l'Eure : rénovation, démoussage, zinguerie, charpente, fenêtres de toit.",
-  alternates: { canonical: "/realisations" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Réalisations : chantiers de couverture dans l'Eure",
+  description: "Chantiers de couverture réalisés aux Andelys et dans l'Eure : rénovation, démoussage, zinguerie, charpente, fenêtres de toit.",
+  path: "/realisations",
+  image: photoHero,
+});
 
 export default function RealisationsPage() {
   const trail = [
@@ -22,6 +25,7 @@ export default function RealisationsPage() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <GalerieSchema url={`${site.url}/realisations`} photos={galerie} />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

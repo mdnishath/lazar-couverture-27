@@ -6,8 +6,9 @@ import { site } from "@/lib/site";
 import { villesBySlug, villeSlugs } from "@/content/villes";
 import { services, p1Services, servicesBySlug } from "@/content/services";
 import { photoVille } from "@/content/images";
+import { pageMeta } from "@/lib/seo";
 import { combosParVille } from "@/content/combos";
-import { FaqSchema, BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { FaqSchema, BreadcrumbSchema, VilleSchema } from "@/components/schema/LocalBusiness";
 import {
   Section,
   SectionTitle,
@@ -36,13 +37,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // non-marque, et Google affiche le nom du site a part.
   const title = `Couvreur ${v.nomAvec} (${v.cp}) — Toiture & zinguerie`;
   const description = `Couvreur zingueur ${v.nomAvec} (${v.cp}) : rénovation de toiture, réparation de fuite, démoussage, gouttières. Devis gratuit, 5,0★ sur 48 avis.`;
-  return {
-    // `absolute` : le titre contient déjà la marque, on n'ajoute pas le suffixe du layout.
-    title: { absolute: title },
+  return pageMeta({
+    title,
     description,
-    alternates: { canonical: `/couvreur/${v.slug}` },
-    openGraph: { title, description, url: `${site.url}/couvreur/${v.slug}`, type: "article" },
-  };
+    path: `/couvreur/${v.slug}`,
+    image: photoVille(v.slug),
+  });
 }
 
 export default async function VillePage({ params }: Props) {
@@ -88,6 +88,12 @@ export default async function VillePage({ params }: Props) {
     <>
       <FaqSchema items={faq} />
       <BreadcrumbSchema trail={trail} />
+      <VilleSchema
+        ville={v.nom}
+        cp={v.cp}
+        url={`${site.url}/couvreur/${v.slug}`}
+        prestations={p1Services.map((s) => ({ name: s.name, slug: s.slug }))}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

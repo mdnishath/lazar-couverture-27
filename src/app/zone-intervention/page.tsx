@@ -1,16 +1,20 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { photoHero } from "@/content/images";
+import { site } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
+
 import { villes } from "@/content/villes";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, Eyebrow, Lead, CtaPair, Breadcrumb, SectionTitle, ArrowIcon } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: { absolute: "Couvreur dans l'Eure : Les Andelys, Vernon, Gisors" },
-  description:
-    "Couvreur aux Andelys, à Vernon, Gaillon, Gisors, Étrépagny, Louviers et dans tout l'Eure. Déplacement et devis gratuits.",
-  alternates: { canonical: "/zone-intervention" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Couvreur dans l'Eure : Les Andelys, Vernon, Gisors",
+  description: "Couvreur aux Andelys, à Vernon, Gaillon, Gisors, Étrépagny, Louviers et dans tout l'Eure. Déplacement et devis gratuits.",
+  path: "/zone-intervention",
+  image: photoHero,
+});
 
 export default function ZonePage() {
   const trail = [
@@ -27,6 +31,12 @@ export default function ZonePage() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="Zone d'intervention"
+        description="Les communes de l'Eure ou Lazar Couverture 27 intervient."
+        url={`${site.url}/zone-intervention`}
+        elements={villes.map((v) => ({ name: `Couvreur ${v.nomAvec}`, href: `/couvreur/${v.slug}` }))}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

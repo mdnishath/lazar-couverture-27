@@ -5,7 +5,8 @@ import type { Metadata } from "next";
 import { site } from "@/lib/site";
 import { guidesBySlug, guideSlugs, guides } from "@/content/guides";
 import { servicesBySlug } from "@/content/services";
-import { getPhotoSet } from "@/content/images";
+import { getPhotoSet, photoPrincipale } from "@/content/images";
+import { pageMeta } from "@/lib/seo";
 import { ArticleSchema, FaqSchema, BreadcrumbSchema } from "@/components/schema/LocalBusiness";
 import {
   Section,
@@ -29,20 +30,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const g = guidesBySlug.get(slug);
   if (!g) return {};
-  return {
-    // Requête informationnelle : la marque en suffixe volerait 22 caractères
-    // utiles sans rien apporter au clic.
-    title: { absolute: g.title },
+  // Requête informationnelle : la marque en suffixe volerait 22 caractères
+  // utiles sans rien apporter au clic — `pageMeta` pose le titre tel quel.
+  const illustration = servicesBySlug.get(g.services[0] ?? "");
+  return pageMeta({
+    title: g.title,
     description: g.metaDescription,
-    alternates: { canonical: `/guides/${slug}` },
-    openGraph: {
-      title: g.title,
-      description: g.metaDescription,
-      url: `${site.url}/guides/${slug}`,
-      type: "article",
-      publishedTime: g.datePublished,
-    },
-  };
+    path: `/guides/${slug}`,
+    image: illustration ? photoPrincipale(illustration.photoDir) : undefined,
+    type: "article",
+    publishedTime: g.datePublished,
+  });
 }
 
 export default async function GuidePage({ params }: Props) {

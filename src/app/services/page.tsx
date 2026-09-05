@@ -1,17 +1,20 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { photoHero } from "@/content/images";
+import { pageMeta } from "@/lib/seo";
+
 import { site } from "@/lib/site";
 import { services, groupesResolus } from "@/content/services";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, SectionTitle, Eyebrow, Lead, CtaPair, Breadcrumb, ArrowIcon } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: { absolute: "Travaux de toiture aux Andelys et dans l'Eure (27)" },
-  description:
-    "Nos 18 prestations de couverture aux Andelys et dans l'Eure : démoussage, nettoyage, fuite, rénovation, zinguerie, charpente. Devis gratuit.",
-  alternates: { canonical: "/services" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Travaux de toiture aux Andelys et dans l'Eure (27)",
+  description: "Nos 18 prestations de couverture aux Andelys et dans l'Eure : démoussage, nettoyage, fuite, rénovation, zinguerie, charpente. Devis gratuit.",
+  path: "/services",
+  image: photoHero,
+});
 
 
 export default function ServicesHub() {
@@ -23,6 +26,12 @@ export default function ServicesHub() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="Travaux de toiture aux Andelys et dans l'Eure"
+        description="Les prestations de couverture, zinguerie et charpente de Lazar Couverture 27."
+        url={`${site.url}/services`}
+        elements={services.map((s) => ({ name: s.name, href: `/services/${s.slug}` }))}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

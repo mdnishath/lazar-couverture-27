@@ -37,7 +37,8 @@ export const metadata: Metadata = {
   },
   description:
     "Couvreur zingueur aux Andelys et dans l'Eure : rénovation de toiture, réparation de fuite, démoussage, zinguerie, gouttières. Devis gratuit, 5,0★ sur 48 avis.",
-  alternates: { canonical: "/" },
+  // Pas de canonique par defaut ici : elle etait heritee par la page 404, qui
+  // se declarait alors canonique de l'accueil. Chaque page pose la sienne.
   openGraph: {
     type: "website",
     locale: "fr_FR",

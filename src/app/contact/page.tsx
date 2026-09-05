@@ -1,17 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import { site } from "@/lib/site";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, Eyebrow, Lead, Breadcrumb, PhoneIcon, FileIcon, RatingBadge, CheckIcon } from "@/components/ui";
 import { Formulaire } from "@/components/Formulaire";
 
-export const metadata: Metadata = {
-  title: { absolute: "Contact — Couvreur aux Andelys (27700) | Lazar Couverture 27" },
-  description:
-    "Contactez Lazar Couverture 27, couvreur aux Andelys et dans l'Eure : téléphone, e-mail, formulaire. Réponse sous 24 heures ouvrées.",
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Contact — Couvreur aux Andelys (27700) | Lazar Couverture 27",
+  description: "Contactez Lazar Couverture 27, couvreur aux Andelys et dans l'Eure : téléphone, e-mail, formulaire. Réponse sous 24 heures ouvrées.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   const trail = [
@@ -22,6 +23,13 @@ export default function ContactPage() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="Contact"
+        description="Telephone, e-mail et formulaire pour joindre Lazar Couverture 27."
+        url={`${site.url}/contact`}
+        type="ContactPage"
+        elements={[]}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

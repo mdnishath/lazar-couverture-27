@@ -7,7 +7,8 @@ import { combosBySlug, comboSlugs, combosParService, combosParVille } from "@/co
 import { servicesBySlug } from "@/content/services";
 import { villesBySlug } from "@/content/villes";
 import { avisPourService } from "@/content/avis";
-import { getPhotoSet, galerie } from "@/content/images";
+import { getPhotoSet, galerie, photoPrincipale } from "@/content/images";
+import { pageMeta } from "@/lib/seo";
 import { ServiceSchema, FaqSchema, BreadcrumbSchema } from "@/components/schema/LocalBusiness";
 import {
   Section,
@@ -34,17 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const c = combosBySlug.get(slug);
   if (!c) return {};
-  return {
-    title: { absolute: c.title },
+  const s = servicesBySlug.get(c.service);
+  return pageMeta({
+    title: c.title,
     description: c.metaDescription,
-    alternates: { canonical: `/interventions/${slug}` },
-    openGraph: {
-      title: c.title,
-      description: c.metaDescription,
-      url: `${site.url}/interventions/${slug}`,
-      type: "article",
-    },
-  };
+    path: `/interventions/${slug}`,
+    image: s ? photoPrincipale(s.photoDir) : undefined,
+  });
 }
 
 export default async function ComboPage({ params }: Props) {

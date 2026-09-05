@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
+
+import { pageMeta } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { avisPublies } from "@/content/avis";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, Eyebrow, Lead, Breadcrumb, CtaPair, StarIcon, ArrowIcon } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: "Avis clients — 5,0 sur 48 avis Google",
-  description:
-    "Les avis Google de Lazar Couverture 27, couvreur aux Andelys : 5,0 sur 5 pour 48 avis. Aucun témoignage inventé.",
-  alternates: { canonical: "/avis" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Avis clients — 5,0 sur 48 avis Google | Lazar Couverture 27",
+  description: "Les avis Google de Lazar Couverture 27, couvreur aux Andelys : 5,0 sur 5 pour 48 avis. Aucun témoignage inventé.",
+  path: "/avis",
+});
 
 export default function AvisPage() {
   const trail = [
@@ -20,6 +21,12 @@ export default function AvisPage() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="Avis clients"
+        description="Les avis Google de Lazar Couverture 27, recopies mot pour mot."
+        url={`${site.url}/avis`}
+        elements={[]}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

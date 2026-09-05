@@ -38,6 +38,25 @@ export const site = {
 
   rating: { value: "5.0", count: 48 },
 
+  /**
+   * Identite legale, relevee sur le registre national des entreprises
+   * (INSEE / annuaire-entreprises.data.gouv.fr) le 5 septembre 2026.
+   * Sert aux mentions legales et au balisage Organization : un SIRET verifiable
+   * est l'un des rares signaux d'entite qu'un concurrent ne peut pas copier.
+   */
+  legal: {
+    denomination: "Kenzo Lazar",
+    enseigne: "Lazar Couverture",
+    forme: "Entrepreneur individuel",
+    siren: "920293412",
+    siret: "92029341200044",
+    ape: "43.91B",
+    apeLibelle: "Travaux de couverture par elements",
+    creation: "2022-09-29",
+    dirigeant: "Kenzo Lazar",
+    rue: "29 rue Guynemer",
+  },
+
   social: {
     google: "https://maps.app.goo.gl/bWSMBmM5kD6fdLCWA",
   },

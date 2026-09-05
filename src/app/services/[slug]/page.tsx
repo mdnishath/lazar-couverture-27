@@ -7,7 +7,8 @@ import { servicesBySlug, serviceSlugs } from "@/content/services";
 import { villes, villesBySlug } from "@/content/villes";
 import { combosParService } from "@/content/combos";
 import { avisPourService } from "@/content/avis";
-import { getPhotoSet, galerie } from "@/content/images";
+import { getPhotoSet, galerie, photoPrincipale } from "@/content/images";
+import { pageMeta } from "@/lib/seo";
 import { ServiceSchema, FaqSchema, BreadcrumbSchema } from "@/components/schema/LocalBusiness";
 import { Answer, DataTable, ExperienceBlock } from "@/components/Answer";
 import { parseInline } from "@/components/RichText";
@@ -36,18 +37,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const s = servicesBySlug.get(slug);
   if (!s) return {};
-  return {
-    // `absolute` : le titre contient déjà la marque, on n'ajoute pas le suffixe du layout.
-    title: { absolute: s.title },
+  return pageMeta({
+    title: s.title,
     description: s.metaDescription,
-    alternates: { canonical: `/services/${s.slug}` },
-    openGraph: {
-      title: s.title,
-      description: s.metaDescription,
-      url: `${site.url}/services/${s.slug}`,
-      type: "article",
-    },
-  };
+    path: `/services/${s.slug}`,
+    image: photoPrincipale(s.photoDir),
+  });
 }
 
 export default async function ServicePage({ params }: Props) {

@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import { site } from "@/lib/site";
-import { photoPrincipale } from "@/content/images";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { photoPrincipale, photoHero } from "@/content/images";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, Eyebrow, Lead, Breadcrumb, CtaPair, RatingBadge, PhotoBlock } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: "À propos — Couvreur aux Andelys",
-  description:
-    "Lazar Couverture 27, entreprise de couverture installée aux Andelys (27700). Rénovation, réparation, démoussage et zinguerie dans toute l'Eure.",
-  alternates: { canonical: "/a-propos" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "À propos — Couvreur aux Andelys | Lazar Couverture 27",
+  description: "Lazar Couverture 27, entreprise de couverture installée aux Andelys (27700). Rénovation, réparation, démoussage et zinguerie dans toute l'Eure.",
+  path: "/a-propos",
+  image: photoHero,
+});
 
 export default function AProposPage() {
   const trail = [
@@ -21,6 +23,13 @@ export default function AProposPage() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="A propos de Lazar Couverture 27"
+        description="Entreprise de couverture installee aux Andelys (27700), dirigee par Kenzo Lazar."
+        url={`${site.url}/a-propos`}
+        type="AboutPage"
+        elements={[]}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">
@@ -66,6 +75,7 @@ export default function AProposPage() {
               photo={photoPrincipale("renovation-toiture")}
               ratio="aspect-[4/3]"
               sizes="(min-width: 1024px) 34vw, 100vw"
+              priority
             />
             <div className="bg-ink-900 p-6">
               <h2 className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-400">

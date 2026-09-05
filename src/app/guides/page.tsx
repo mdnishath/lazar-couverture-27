@@ -1,17 +1,19 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { site } from "@/lib/site";
+import { pageMeta } from "@/lib/seo";
+
 import { guides } from "@/content/guides";
 import { servicesBySlug } from "@/content/services";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, SectionTitle, Eyebrow, Lead, Breadcrumb, CtaPair, ArrowIcon } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: { absolute: "Guides toiture : prix, aides, matériaux, entretien" },
-  description:
-    "Comprendre avant de faire faire : prix au m², aides, ardoise ou tuile, durée de vie, assurance. Guides écrits par un couvreur de l'Eure.",
-  alternates: { canonical: "/guides" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Guides toiture : prix, aides, matériaux, entretien",
+  description: "Comprendre avant de faire faire : prix au m², aides, ardoise ou tuile, durée de vie, assurance. Guides écrits par un couvreur de l'Eure.",
+  path: "/guides",
+});
 
 export default function GuidesHub() {
   const trail = [
@@ -22,6 +24,12 @@ export default function GuidesHub() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="Guides toiture"
+        description="Prix, aides, materiaux, entretien : ce qu'il faut savoir avant de faire refaire sa toiture."
+        url={`${site.url}/guides`}
+        elements={guides.map((g) => ({ name: g.titreCourt, href: `/guides/${g.slug}` }))}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

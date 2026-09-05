@@ -2,6 +2,7 @@ import { site } from "@/lib/site";
 import { services } from "@/content/services";
 import { villes } from "@/content/villes";
 import { avisAccueil } from "@/content/avis";
+import { galerie } from "@/content/images";
 
 function jsonLd(data: unknown) {
   return { __html: JSON.stringify(data) };
@@ -14,10 +15,35 @@ export function LocalBusinessSchema() {
     "@type": "RoofingContractor",
     "@id": `${site.url}/#business`,
     name: site.name,
+    legalName: site.legal.denomination,
+    alternateName: site.legal.enseigne,
+    description: `${site.tagline} : renovation de toiture, reparation de fuite, demoussage, zinguerie et gouttieres.`,
     url: site.url,
     telephone: site.phoneSchema,
     email: site.email,
-    image: `${site.url}/og.jpg`,
+    logo: `${site.url}/logo.png`,
+    // Plusieurs photos reelles plutot qu'une seule vignette de marque :
+    // Google en choisit une, autant qu'il ait des chantiers a choisir.
+    image: [`${site.url}/og.jpg`, ...galerie.slice(0, 6).map((g) => `${site.url}${g.src}`)],
+    // Le SIRET est le seul identifiant qu'un concurrent ne peut pas revendiquer.
+    identifier: [
+      { "@type": "PropertyValue", propertyID: "SIRET", value: site.legal.siret },
+      { "@type": "PropertyValue", propertyID: "SIREN", value: site.legal.siren },
+    ],
+    foundingDate: site.legal.creation,
+    founder: { "@type": "Person", name: site.legal.dirigeant },
+    knowsLanguage: "fr-FR",
+    currenciesAccepted: "EUR",
+    paymentAccepted: "Especes, virement, cheque",
+    hasMap: site.social.google,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "Devis et interventions",
+      telephone: site.phoneSchema,
+      email: site.email,
+      areaServed: "FR",
+      availableLanguage: "fr",
+    },
     priceRange: "€€",
     address: {
       "@type": "PostalAddress",
@@ -92,8 +118,21 @@ export function OrganizationSchema() {
         "@type": "Organization",
         "@id": `${site.url}/#organization`,
         name: site.name,
+        legalName: site.legal.denomination,
         url: site.url,
         telephone: site.phoneSchema,
+        logo: {
+          "@type": "ImageObject",
+          url: `${site.url}/logo.png`,
+          width: 1050,
+          height: 309,
+        },
+        identifier: {
+          "@type": "PropertyValue",
+          propertyID: "SIRET",
+          value: site.legal.siret,
+        },
+        sameAs: [site.social.google],
       },
       {
         "@type": "WebSite",
@@ -190,6 +229,145 @@ export function ArticleSchema({
       url: site.url,
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
+}
+
+/**
+ * Reference courte vers l'entreprise. Le `@id` seul suffit sur l'accueil, ou
+ * l'entite complete est declaree ; ailleurs on rappelle le minimum pour que la
+ * page reste comprehensible isolement, comme Google la lit souvent.
+ */
+const entreprise = {
+  "@type": "RoofingContractor",
+  "@id": `${site.url}/#business`,
+  name: site.name,
+  url: site.url,
+  telephone: site.phoneSchema,
+} as const;
+
+/**
+ * Page de liste : services, guides, communes, interventions.
+ * Sans elle, Google voit une suite de liens sans savoir qu'ils forment un
+ * ensemble — et choisit lui-meme lesquels valent d'etre suivis.
+ */
+export function ListeSchema({
+  nom,
+  description,
+  url,
+  type = "CollectionPage",
+  elements,
+}: {
+  nom: string;
+  description: string;
+  url: string;
+  type?: "CollectionPage" | "ContactPage" | "AboutPage";
+  elements: { name: string; href: string }[];
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": type,
+    "@id": url,
+    name: nom,
+    description,
+    url,
+    inLanguage: "fr-FR",
+    isPartOf: { "@id": `${site.url}/#website` },
+    about: entreprise,
+    ...(elements.length
+      ? {
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: elements.length,
+            itemListElement: elements.map((e, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: e.name,
+              url: `${site.url}${e.href}`,
+            })),
+          },
+        }
+      : {}),
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
+}
+
+/**
+ * Galerie de chantiers. Les photos portent deja leurs metadonnees EXIF ;
+ * ce balisage les rend lisibles par Google Images, avec la legende et le
+ * proprietaire des droits.
+ */
+export function GalerieSchema({
+  url,
+  photos,
+}: {
+  url: string;
+  photos: { src: string; width: number; height: number; alt: string; titre: string; legende: string }[];
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    "@id": url,
+    name: `Realisations — ${site.name}`,
+    url,
+    inLanguage: "fr-FR",
+    isPartOf: { "@id": `${site.url}/#website` },
+    about: entreprise,
+    associatedMedia: photos.map((p) => ({
+      "@type": "ImageObject",
+      contentUrl: `${site.url}${p.src}`,
+      url: `${site.url}${p.src}`,
+      width: p.width,
+      height: p.height,
+      name: p.titre,
+      caption: p.legende,
+      description: p.alt,
+      creditText: site.name,
+      creator: { "@id": `${site.url}/#organization` },
+      copyrightNotice: `© ${site.name}`,
+      acquireLicensePage: `${site.url}/mentions-legales`,
+    })),
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
+}
+
+/**
+ * Page commune. Un `Service` dont la zone est la commune seule : c'est ce qui
+ * distingue « couvreur a Vernon » de la page d'accueil aux yeux de Google,
+ * sinon les deux se disputent la meme requete.
+ */
+export function VilleSchema({
+  ville,
+  cp,
+  url,
+  prestations,
+}: {
+  ville: string;
+  cp: string;
+  url: string;
+  prestations: { name: string; slug: string }[];
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${url}#service`,
+    name: `Couvreur a ${ville} (${cp})`,
+    serviceType: "Travaux de couverture et de zinguerie",
+    url,
+    provider: entreprise,
+    areaServed: { "@type": "City", name: ville, postalCode: cp, addressCountry: "FR" },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `Prestations a ${ville}`,
+      itemListElement: prestations.map((p) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: `${p.name} a ${ville}`,
+          url: `${site.url}/services/${p.slug}`,
+        },
+      })),
+    },
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
 }

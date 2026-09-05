@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import { site } from "@/lib/site";
 import { services } from "@/content/services";
 import { villes } from "@/content/villes";
-import { BreadcrumbSchema } from "@/components/schema/LocalBusiness";
+import { BreadcrumbSchema, ListeSchema } from "@/components/schema/LocalBusiness";
 import { Section, Eyebrow, Lead, Breadcrumb, CheckIcon, PhoneIcon, RatingBadge } from "@/components/ui";
 import { Formulaire } from "@/components/Formulaire";
 
-export const metadata: Metadata = {
-  title: { absolute: "Devis couvreur gratuit aux Andelys et dans l'Eure" },
-  description:
-    "Devis couvreur gratuit aux Andelys, à Vernon, Gisors et dans l'Eure : déplacement et diagnostic offerts, réponse sous 24 h ouvrées.",
-  alternates: { canonical: "/devis-gratuit" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Devis couvreur gratuit aux Andelys et dans l'Eure",
+  description: "Devis couvreur gratuit aux Andelys, à Vernon, Gisors et dans l'Eure : déplacement et diagnostic offerts, réponse sous 24 h ouvrées.",
+  path: "/devis-gratuit",
+});
 
 export default function DevisPage() {
   const trail = [
@@ -23,6 +24,13 @@ export default function DevisPage() {
   return (
     <>
       <BreadcrumbSchema trail={trail} />
+      <ListeSchema
+        nom="Devis couvreur gratuit"
+        description="Demande de devis gratuit pour des travaux de toiture aux Andelys et dans l'Eure."
+        url={`${site.url}/devis-gratuit`}
+        type="ContactPage"
+        elements={[]}
+      />
       <Breadcrumb trail={trail} />
 
       <Section className="pt-8">

@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { pageMeta } from "@/lib/seo";
+
 import { site } from "@/lib/site";
 import { services, p1Services, groupesResolus } from "@/content/services";
 import { villes } from "@/content/villes";
@@ -23,12 +25,11 @@ import {
   StarIcon,
 } from "@/components/ui";
 
-export const metadata: Metadata = {
-  title: { absolute: "Couvreur aux Andelys (27700) — Couvreur zingueur Eure" },
-  description:
-    "Couvreur zingueur aux Andelys (27700) : rénovation de toiture, fuite, démoussage, zinguerie, gouttières. Devis gratuit, 5,0★ sur 48 avis.",
-  alternates: { canonical: "/" },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Couvreur aux Andelys (27700) — Couvreur zingueur Eure",
+  description: "Couvreur zingueur aux Andelys (27700) : rénovation de toiture, fuite, démoussage, zinguerie, gouttières. Devis gratuit, 5,0★ sur 48 avis.",
+  path: "/",
+});
 
 
 export default function Home() {
