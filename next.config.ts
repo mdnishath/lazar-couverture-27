@@ -39,16 +39,20 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     /**
-     * Les URL indexees par Google se terminent toutes par un slash
-     * (`/zinguerie/`). Sans le `{/}?`, Next normalisait d'abord le slash puis
-     * redirigeait : deux sauts au lieu d'un sur la page la mieux classee.
+     * Les URL indexees par Google se terminent par un slash (`/zinguerie/`).
+     * Next retire d'abord le slash, puis applique la regle : la chaine fait
+     * donc deux 308 (`/zinguerie/` -> `/zinguerie` -> `/services/zinguerie`).
+     * On la laisse telle quelle : un 308 transmet le classement, et Google
+     * suit les chaines courtes sans perte. La seule facon de la reduire a un
+     * saut serait `skipTrailingSlashRedirect`, qui priverait les 81 autres
+     * pages de leur normalisation — bien pire.
      */
     return [
-      { source: "/zinguerie{/}?", destination: "/services/zinguerie", permanent: true },
-      { source: "/renovation-de-toitures{/}?", destination: "/services/renovation-toiture", permanent: true },
-      { source: "/reparation-deau-en-urgence{/}?", destination: "/services/fuite-toiture", permanent: true },
-      { source: "/galerie{/}?", destination: "/realisations", permanent: true },
-      { source: "/gallery{/}?", destination: "/realisations", permanent: true },
+      { source: "/zinguerie", destination: "/services/zinguerie", permanent: true },
+      { source: "/renovation-de-toitures", destination: "/services/renovation-toiture", permanent: true },
+      { source: "/reparation-deau-en-urgence", destination: "/services/fuite-toiture", permanent: true },
+      { source: "/galerie", destination: "/realisations", permanent: true },
+      { source: "/gallery", destination: "/realisations", permanent: true },
     ];
   },
 };
