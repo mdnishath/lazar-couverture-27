@@ -38,12 +38,17 @@ const nextConfig: NextConfig = {
   },
 
   async redirects() {
+    /**
+     * Les URL indexees par Google se terminent toutes par un slash
+     * (`/zinguerie/`). Sans le `{/}?`, Next normalisait d'abord le slash puis
+     * redirigeait : deux sauts au lieu d'un sur la page la mieux classee.
+     */
     return [
-      { source: "/zinguerie", destination: "/services/zinguerie", permanent: true },
-      { source: "/renovation-de-toitures", destination: "/services/renovation-toiture", permanent: true },
-      { source: "/reparation-deau-en-urgence", destination: "/services/fuite-toiture", permanent: true },
-      { source: "/galerie", destination: "/realisations", permanent: true },
-      { source: "/gallery", destination: "/realisations", permanent: true },
+      { source: "/zinguerie{/}?", destination: "/services/zinguerie", permanent: true },
+      { source: "/renovation-de-toitures{/}?", destination: "/services/renovation-toiture", permanent: true },
+      { source: "/reparation-deau-en-urgence{/}?", destination: "/services/fuite-toiture", permanent: true },
+      { source: "/galerie{/}?", destination: "/realisations", permanent: true },
+      { source: "/gallery{/}?", destination: "/realisations", permanent: true },
     ];
   },
 };
