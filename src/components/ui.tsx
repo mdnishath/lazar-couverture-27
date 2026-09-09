@@ -13,7 +13,7 @@ export function CallButton({ className = "", label = "Appeler maintenant" }: { c
   return (
     <a
       href={site.phoneHref}
-      className={`inline-flex items-center justify-center gap-2 bg-brand-500 px-6 py-3.5 font-display text-lg font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-400 ${className}`}
+      className={`inline-flex items-center justify-center gap-2 bg-brand-500 px-6 py-3.5 font-display text-lg font-bold uppercase tracking-wide text-white transition-colors hover:bg-brand-600 ${className}`}
     >
       <PhoneIcon />
       {label}

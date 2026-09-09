@@ -168,7 +168,7 @@ export function PhotoBlock({
         <button
           type="button"
           onClick={() => setOuvert(true)}
-          aria-label={`Agrandir : ${photo.alt}`}
+          aria-label={`Agrandir : ${label} — ${photo.alt}`}
           className="group absolute inset-0 h-full w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
         >
           {contenu}

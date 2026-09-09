@@ -257,7 +257,7 @@ export default async function ComboPage({ params }: Props) {
           <div className="mt-8 grid gap-px bg-ink-800 sm:grid-cols-2">
             {reviews.map((a) => (
               <figure key={a.auteur} className="bg-ink-950 p-7">
-                <div className="flex gap-0.5 text-brand-300" aria-label={`${a.note} sur 5`}>
+                <div role="img" className="flex gap-0.5 text-brand-300" aria-label={`${a.note} sur 5`}>
                   {Array.from({ length: a.note }).map((_, i) => (
                     <StarIcon key={i} />
                   ))}

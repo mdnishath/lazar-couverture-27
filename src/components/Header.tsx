@@ -111,7 +111,7 @@ export function Header() {
 
         <a
           href={site.phoneHref}
-          className="ml-auto hidden items-center gap-2 bg-brand-500 px-4 py-2.5 font-mono text-sm font-semibold text-white transition-colors hover:bg-brand-400 lg:ml-0 lg:inline-flex"
+          className="ml-auto hidden items-center gap-2 bg-brand-500 px-4 py-2.5 font-mono text-sm font-semibold text-white transition-colors hover:bg-brand-600 lg:ml-0 lg:inline-flex"
         >
           <PhoneIcon className="h-4 w-4" />
           {site.phone}

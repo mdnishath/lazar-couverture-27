@@ -261,7 +261,7 @@ export function Formulaire({
       <button
         type="submit"
         disabled={enCours}
-        className="w-full bg-brand-500 px-6 py-4 font-display text-xl font-bold uppercase text-white transition-colors hover:bg-brand-400 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full bg-brand-500 px-6 py-4 font-display text-xl font-bold uppercase text-white transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {enCours ? "Envoi en cours…" : devis ? "Envoyer ma demande" : "Envoyer le message"}
       </button>

@@ -153,7 +153,7 @@ export default async function ServicePage({ params }: Props) {
                 <div className="mt-6 space-y-5">
                   {reviews.map((a) => (
                     <figure key={a.auteur} className="border border-ink-800 bg-ink-900 p-6">
-                      <div className="flex gap-0.5 text-brand-300" aria-label={`${a.note} sur 5`}>
+                      <div role="img" className="flex gap-0.5 text-brand-300" aria-label={`${a.note} sur 5`}>
                         {Array.from({ length: a.note }).map((_, i) => (
                           <StarIcon key={i} />
                         ))}

@@ -254,7 +254,7 @@ export default function Home() {
         <ol className="mt-10 grid border-l border-t border-ink-800 sm:grid-cols-2 lg:grid-cols-4">
           {demarche.map((e) => (
             <li key={e.n} className="border-b border-r border-ink-800 p-7">
-              <span className="font-display text-4xl font-extrabold leading-none text-brand-500/70">
+              <span className="font-display text-4xl font-extrabold leading-none text-brand-400/70">
                 {e.n}
               </span>
               <h3 className="mt-4 font-display text-xl font-bold uppercase">{e.titre}</h3>
@@ -291,7 +291,7 @@ export default function Home() {
             </p>
             <a
               href={site.phoneHref}
-              className="mt-5 inline-flex items-center gap-2 self-start bg-brand-500 px-5 py-2.5 font-mono text-sm font-semibold text-white transition-colors hover:bg-brand-400"
+              className="mt-5 inline-flex items-center gap-2 self-start bg-brand-500 px-5 py-2.5 font-mono text-sm font-semibold text-white transition-colors hover:bg-brand-600"
             >
               {site.phone}
             </a>
@@ -405,7 +405,7 @@ export default function Home() {
           <div className="mt-10 grid gap-px bg-ink-800 sm:grid-cols-2 lg:grid-cols-3">
             {avisAccueil.map((a) => (
               <figure key={a.auteur} className="bg-ink-950 p-7">
-                <div className="flex gap-0.5 text-brand-300" aria-label={`${a.note} sur 5`}>
+                <div role="img" className="flex gap-0.5 text-brand-300" aria-label={`${a.note} sur 5`}>
                   {Array.from({ length: a.note }).map((_, i) => (
                     <StarIcon key={i} />
                   ))}

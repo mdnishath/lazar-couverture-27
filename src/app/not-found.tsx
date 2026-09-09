@@ -30,7 +30,7 @@ export default function NotFound() {
       <div className="mt-8 flex flex-wrap gap-4">
         <a
           href={site.phoneHref}
-          className="inline-flex items-center gap-2 bg-brand-500 px-6 py-4 font-display text-xl font-bold uppercase text-white transition-colors hover:bg-brand-400"
+          className="inline-flex items-center gap-2 bg-brand-500 px-6 py-4 font-display text-xl font-bold uppercase text-white transition-colors hover:bg-brand-600"
         >
           <PhoneIcon className="h-5 w-5" />
           {site.phone}

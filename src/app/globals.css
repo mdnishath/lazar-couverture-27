@@ -7,7 +7,10 @@
   --color-brand-200: #f7c9a8;
   --color-brand-300: #f9a66c;
   --color-brand-400: #ee7a2b;
-  --color-brand-500: #d2500a;
+  /* Orange d'action. #d2500a ne donnait que 4.29:1 avec du texte blanc :
+     sous la barre de 4.5:1 exigee par WCAG AA. Assombri jusqu'a 4.76:1.
+     Ne pas l'eclaircir sans reverifier le contraste des boutons. */
+  --color-brand-500: #c74a08;
   --color-brand-600: #b34209;
   --color-brand-700: #8c3407;
 
