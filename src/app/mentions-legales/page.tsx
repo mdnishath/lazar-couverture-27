@@ -89,7 +89,7 @@ export default function MentionsPage() {
             </p>
           </section>
 
-          <section>
+          <section id="licence-images">
             <h2 className="font-display text-2xl font-bold uppercase text-ink-50">Propriété intellectuelle</h2>
             <p className="mt-3">
               Les textes et les photographies de chantier publiés sur ce site appartiennent à {site.name}.

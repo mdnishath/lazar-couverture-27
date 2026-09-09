@@ -337,7 +337,11 @@ export function GalerieSchema({
       creditText: site.name,
       creator: { "@id": `${site.url}/#organization` },
       copyrightNotice: `© ${site.name}`,
-      acquireLicensePage: `${site.url}/mentions-legales`,
+      // `license` est le champ que Google exige pour le badge « Licensable » ;
+      // sans lui l'image reste indexee mais ne porte aucune mention de droits.
+      // Il pointe la clause de propriete intellectuelle, pas la page entiere.
+      license: `${site.url}/mentions-legales#licence-images`,
+      acquireLicensePage: `${site.url}/mentions-legales#licence-images`,
     })),
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
